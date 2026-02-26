@@ -1,0 +1,63 @@
+name: EKAPE Data Parsing
+
+on:
+  schedule:
+    # 매일 오전 9시 (KST) = UTC 00:00
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  parse-data:
+    runs-on: ubuntu-latest
+    
+    env:
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3.2'
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+      
+      - name: Install R packages
+        run: |
+          install.packages(c(
+            "tidyverse",
+            "readr", 
+            "stringr",
+            "rvest",
+            "lubridate",
+            "janitor",
+            "rio",
+            "googlesheets4",
+            "gargle"
+          ), repos = "https://cloud.r-project.org/")
+          
+          # hanwoo 패키지 설치 (GitHub에서)
+          install.packages("remotes")
+          remotes::install_github("adatalab/hanwoo")
+        shell: Rscript {0}
+      
+      - name: Create service account file
+        run: |
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > service-account.json
+      
+      - name: Run parsing script
+        run: |
+          Rscript ekape-parsingscript-action.R
+      
+      - name: Commit and push data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data_hanwoo_stock/
+          git diff --staged --quiet || git commit -m "Update hanwoo stock data - $(date +'%Y-%m-%d')"
+          git push

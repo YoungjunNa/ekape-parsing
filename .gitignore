@@ -1,0 +1,24 @@
+# R related
+.Rhistory
+.Rdata
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Environment
+.env
+*.json
+!renv.lock
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+*.Rproj
+
+# Credentials (중요!)
+*credentials*
+*token*
+*secret*
+service-account*.json
