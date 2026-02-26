@@ -30,20 +30,10 @@ jobs:
       - name: Install R packages
         run: |
           install.packages(c(
-            "tidyverse",
-            "readr", 
-            "stringr",
+            "dplyr",
             "rvest",
-            "lubridate",
-            "janitor",
-            "rio",
-            "googlesheets4",
-            "gargle"
+            "googlesheets4"
           ), repos = "https://cloud.r-project.org/")
-          
-          # hanwoo 패키지 설치 (GitHub에서)
-          install.packages("remotes")
-          remotes::install_github("adatalab/hanwoo")
         shell: Rscript {0}
       
       - name: Create service account file
