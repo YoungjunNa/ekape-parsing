@@ -1,16 +1,15 @@
 # EKAPE Parsing Script for GitHub Actions
-# 서비스 계정을 사용한 Google Sheets 인증
-# 최소 패키지 버전
+# Google Drive 없이 로컬 CSV로 데이터 관리
 
-# Load libraries (최소화)
+# Load libraries
 library(dplyr)
 library(rvest)
-library(googlesheets4)
 
 # ============================================
-# Google Sheets 인증 (서비스 계정 사용)
+# 설정
 # ============================================
-gs4_auth(path = "service-account.json")
+DATA_DIR <- "data_hanwoo_stock"
+CSV_FILE <- file.path(DATA_DIR, "hanwoo-stock.csv")
 
 # ============================================
 # 헬퍼 함수
@@ -45,18 +44,18 @@ dd1 <- dd |>
   select(date, 명절, everything())
 
 # ============================================
-# Google Sheets 읽기 & 쓰기
+# 기존 CSV 읽기 또는 새로 생성
 # ============================================
-sheet_url <- "https://docs.google.com/spreadsheets/d/1baViBjPUz1wyicG-I-vN5RhyoCcFt-6lw550evTowEg/edit#gid=1181990123"
+dir.create(DATA_DIR, showWarnings = FALSE)
 
-df <- read_sheet(sheet_url, sheet = 1)
-
-# wday 컬럼 제거 후 재생성
-if ("wday" %in% names(df)) {
-  df <- df |> select(-wday)
+if (file.exists(CSV_FILE)) {
+  message("📂 기존 CSV 파일 읽는 중: ", CSV_FILE)
+  df <- read.csv(CSV_FILE, stringsAsFactors = FALSE)
+  df$date <- as.Date(df$date)
+} else {
+  message("📄 새 CSV 파일 생성")
+  df <- data.frame()
 }
-df <- unique(df)
-df$wday <- weekdays(as.Date(df$date), abbreviate = TRUE)
 
 # 새 데이터에 날짜 관련 컬럼 추가
 df1 <- dd1 |>
@@ -67,23 +66,35 @@ df1 <- dd1 |>
     wday = weekdays(date, abbreviate = TRUE)
   )
 
-# 기존 데이터에서 새 데이터에 없는 날짜만 필터
-df$date <- as.Date(df$date)
-df2 <- df |>
-  filter(!date %in% df1$date)
+# 기존 데이터가 있으면 병합
+if (nrow(df) > 0) {
+  # wday 컬럼 제거 후 재생성
+  if ("wday" %in% names(df)) {
+    df <- df |> select(-wday)
+  }
+  df <- unique(df)
+  df$wday <- weekdays(as.Date(df$date), abbreviate = TRUE)
+  
+  # 기존 데이터에서 새 데이터에 없는 날짜만 필터
+  df2 <- df |>
+    filter(!date %in% df1$date)
+  
+  # 합치기
+  df_final <- bind_rows(df1, df2)
+} else {
+  df_final <- df1
+}
 
-# 합치기
-df_final <- bind_rows(df1, df2)
+# 날짜 정렬
+df_final <- df_final |> arrange(desc(date))
 
 message("총 ", nrow(df_final), " 행의 데이터")
 print(head(df_final))
 
-# Google Sheets에 쓰기
-write_sheet(data = df_final, sheet_url, sheet = 1)
-
-# 로컬 파일로 저장
-dir.create("data_hanwoo_stock", showWarnings = FALSE)
-filename <- paste0("data_hanwoo_stock/hanwoo-stock-", Sys.Date(), ".csv")
-write.csv(df_final, file = filename, row.names = FALSE)
+# ============================================
+# CSV로 저장
+# ============================================
+write.csv(df_final, file = CSV_FILE, row.names = FALSE, fileEncoding = "UTF-8")
 
 message("✅ 데이터 업데이트 완료: ", Sys.Date())
+message("📁 저장 위치: ", CSV_FILE)
