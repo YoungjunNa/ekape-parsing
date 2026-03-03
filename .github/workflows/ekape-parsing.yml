@@ -27,7 +27,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
       
+      - name: Cache R packages
+        id: cache-r-packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-4.3.2-${{ hashFiles('.github/workflows/ekape-parsing.yml') }}
+
       - name: Install R packages
+        if: steps.cache-r-packages.outputs.cache-hit != 'true'
         run: |
           install.packages(c(
             "dplyr",
