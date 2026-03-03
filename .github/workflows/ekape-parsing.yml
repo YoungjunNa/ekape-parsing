@@ -31,7 +31,8 @@ jobs:
         run: |
           install.packages(c(
             "dplyr",
-            "rvest"
+            "rvest",
+            "readr"
           ), repos = "https://cloud.r-project.org/")
         shell: Rscript {0}
       

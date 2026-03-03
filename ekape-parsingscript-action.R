@@ -4,19 +4,13 @@
 # Load libraries
 library(dplyr)
 library(rvest)
+library(readr)
 
 # ============================================
 # 설정
 # ============================================
 DATA_DIR <- "data_hanwoo_stock"
 CSV_FILE <- file.path(DATA_DIR, "hanwoo-stock.csv")
-
-# ============================================
-# 헬퍼 함수
-# ============================================
-parse_number_simple <- function(x) {
-  as.numeric(gsub("[^0-9.-]", "", x))
-}
 
 # ============================================
 # 데이터 크롤링
@@ -29,16 +23,11 @@ dd <- dd[-c(1:2), ]
 
 names(dd) <- c("date", "암송아지", "숫송아지", "농가수취가격_600kg", "지육_평균", "지육_1등급", "도매_등심1등급", "소비자_등심1등급")
 
-# 숫자 변환
+# 숫자 변환 (readr::parse_number 사용 - 천단위 구분자 올바르게 처리)
 dd1 <- dd |>
   mutate(
-    암송아지 = parse_number_simple(암송아지) * 1000,
-    숫송아지 = parse_number_simple(숫송아지) * 1000,
-    농가수취가격_600kg = parse_number_simple(농가수취가격_600kg) * 1000,
-    지육_평균 = parse_number_simple(지육_평균),
-    지육_1등급 = parse_number_simple(지육_1등급),
-    도매_등심1등급 = parse_number_simple(도매_등심1등급),
-    소비자_등심1등급 = parse_number_simple(소비자_등심1등급),
+    across(암송아지:소비자_등심1등급, parse_number),
+    across(암송아지:농가수취가격_600kg, ~ .x * 1000),
     명절 = NA
   ) |>
   select(date, 명절, everything())
