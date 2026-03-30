@@ -3,6 +3,7 @@
 
 # Load libraries
 library(dplyr)
+library(lubridate)
 library(rvest)
 library(readr)
 
@@ -15,7 +16,7 @@ CSV_FILE <- file.path(DATA_DIR, "hanwoo-stock.csv")
 # ============================================
 # 데이터 크롤링
 # ============================================
-dd <- rvest::read_html("https://www.ekapepia.com/supPrice/liveStock/type/cowNew.do?menuSn=86&boardInfoNo=&bbsSn=&userGroupType=40&paramSearchTxt=&pstSn=0") |>
+dd <- rvest::read_html("https://www.ekapepia.com/v3/price/livestock/cow/distrPrice.do?menuSn=33&boardInfoNo=") |>
   html_table()
 
 dd <- dd[[1]]
@@ -49,7 +50,7 @@ if (file.exists(CSV_FILE)) {
 # 새 데이터에 날짜 관련 컬럼 추가
 df1 <- dd1 |>
   mutate(
-    date = as.Date(date),
+    date = as.Date(ymd(paste0(year(today()), date))),
     year = as.integer(format(date, "%Y")),
     week = as.integer(format(date, "%V")),
     wday = weekdays(date, abbreviate = TRUE)
@@ -63,11 +64,11 @@ if (nrow(df) > 0) {
   }
   df <- unique(df)
   df$wday <- weekdays(as.Date(df$date), abbreviate = TRUE)
-  
+
   # 기존 데이터에서 새 데이터에 없는 날짜만 필터
   df2 <- df |>
     filter(!date %in% df1$date)
-  
+
   # 합치기
   df_final <- bind_rows(df1, df2)
 } else {
