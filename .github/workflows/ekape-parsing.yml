@@ -39,7 +39,6 @@ jobs:
         run: |
           install.packages(c(
             "dplyr",
-            "lubridate",
             "rvest",
             "readr"
           ), repos = "https://cloud.r-project.org/")

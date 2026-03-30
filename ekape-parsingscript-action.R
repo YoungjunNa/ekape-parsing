@@ -3,7 +3,6 @@
 
 # Load libraries
 library(dplyr)
-library(lubridate)
 library(rvest)
 library(readr)
 
@@ -47,14 +46,23 @@ if (file.exists(CSV_FILE)) {
   df <- data.frame()
 }
 
-# 새 데이터에 날짜 관련 컬럼 추가
+# 새 데이터에 날짜 관련 컬럼 추가 (lubridate 없이 base R 사용)
 df1 <- dd1 |>
   mutate(
-    date = as.Date(ymd(paste0(year(today()), date))),
+    # 원본 date 형식: "03월 30일" → 변환
+    month_day = gsub("월 ", "-", gsub("일", "", date)),  # "03-30"
+    date_parsed = as.Date(paste0(format(Sys.Date(), "%Y"), "-", month_day), format = "%Y-%m-%d"),
+    # 연도 경계 처리: 날짜가 현재보다 7일 이상 미래면 전년도로 처리
+    date = if_else(
+      date_parsed > Sys.Date() + 7,
+      as.Date(paste0(as.integer(format(Sys.Date(), "%Y")) - 1, "-", month_day), format = "%Y-%m-%d"),
+      date_parsed
+    ),
     year = as.integer(format(date, "%Y")),
     week = as.integer(format(date, "%V")),
     wday = weekdays(date, abbreviate = TRUE)
-  )
+  ) |>
+  select(-month_day, -date_parsed)
 
 # 기존 데이터가 있으면 병합
 if (nrow(df) > 0) {
