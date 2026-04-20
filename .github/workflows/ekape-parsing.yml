@@ -32,7 +32,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.3.2-${{ hashFiles('.github/workflows/ekape-parsing.yml') }}
+          key: ${{ runner.os }}-r-4.3.2-prophet-${{ hashFiles('.github/workflows/ekape-parsing.yml') }}
 
       - name: Install R packages
         if: steps.cache-r-packages.outputs.cache-hit != 'true'
@@ -40,7 +40,13 @@ jobs:
           install.packages(c(
             "dplyr",
             "rvest",
-            "readr"
+            "readr",
+            "prophet",
+            "ggplot2",
+            "tidyr",
+            "patchwork",
+            "scales",
+            "lubridate"
           ), repos = "https://cloud.r-project.org/")
         shell: Rscript {0}
       
@@ -48,10 +54,18 @@ jobs:
         run: |
           Rscript ekape-parsingscript-action.R
       
+      - name: Run forecast script
+        run: |
+          Rscript ekape-forecast.R
+      
+      - name: Generate forecast plot
+        run: |
+          Rscript generate-plot.R
+      
       - name: Commit and push data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data_hanwoo_stock/
-          git diff --staged --quiet || git commit -m "Update hanwoo stock data - $(date +'%Y-%m-%d')"
+          git add data_hanwoo_stock/ assets/
+          git diff --staged --quiet || git commit -m "Update hanwoo stock data & forecast - $(date +'%Y-%m-%d')"
           git push
