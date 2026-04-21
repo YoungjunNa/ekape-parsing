@@ -26,29 +26,20 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
-      
-      - name: Cache R packages
-        id: cache-r-packages
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.3.2-prophet-${{ hashFiles('.github/workflows/ekape-parsing.yml') }}
 
-      - name: Install R packages
-        if: steps.cache-r-packages.outputs.cache-hit != 'true'
-        run: |
-          install.packages(c(
-            "dplyr",
-            "rvest",
-            "readr",
-            "prophet",
-            "ggplot2",
-            "tidyr",
-            "patchwork",
-            "scales",
-            "lubridate"
-          ), repos = "https://cloud.r-project.org/")
-        shell: Rscript {0}
+      - name: Setup R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::dplyr
+            any::rvest
+            any::readr
+            any::prophet
+            any::ggplot2
+            any::tidyr
+            any::patchwork
+            any::scales
+            any::lubridate
       
       - name: Run parsing script
         run: |
