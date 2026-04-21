@@ -22,3 +22,6 @@
 *token*
 *secret*
 service-account*.json
+
+# Paper drafts (local only)
+paper/
