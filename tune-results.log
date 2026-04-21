@@ -1,0 +1,205 @@
+경고메시지(들):
+1: 패키지 ‘prophet’는 R 버전 4.4.3에서 작성되었습니다 
+2: 패키지 ‘Rcpp’는 R 버전 4.4.3에서 작성되었습니다 
+3: 패키지 ‘rlang’는 R 버전 4.4.3에서 작성되었습니다 
+4: 패키지 ‘dplyr’는 R 버전 4.4.3에서 작성되었습니다 
+5: 패키지 ‘readr’는 R 버전 4.4.3에서 작성되었습니다 
+6: 패키지 ‘lubridate’는 R 버전 4.4.3에서 작성되었습니다 
+7: 패키지 ‘tidyr’는 R 버전 4.4.3에서 작성되었습니다 
+========================================
+Prophet 하이퍼파라미터 그리드 서치 시작
+그리드 크기: 16 조합 × 3변수
+========================================
+
+=== Tuning: 지육_평균 ===
+  cps=0.001 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.1269
+  cps=0.001 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.1269
+  cps=0.001 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.1271
+  cps=0.001 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.1271
+  cps=0.010 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0898
+  cps=0.010 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0898
+  cps=0.010 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0900
+  cps=0.010 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0900
+  cps=0.050 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0832
+  cps=0.050 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0832
+  cps=0.050 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0824
+  cps=0.050 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0824
+  cps=0.500 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0744
+  cps=0.500 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0744
+  cps=0.500 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0743
+  cps=0.500 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-03 and 2025-10-19
+MAPE=0.0743
+# A tibble: 16 × 4
+   changepoint_prior_scale seasonality_prior_scale holidays_prior_scale   MAPE
+                     <dbl>                   <dbl>                <dbl>  <dbl>
+ 1                   0.5                        10                    1 0.0743
+ 2                   0.5                        10                   10 0.0743
+ 3                   0.5                         1                    1 0.0744
+ 4                   0.5                         1                   10 0.0744
+ 5                   0.05                       10                    1 0.0824
+ 6                   0.05                       10                   10 0.0824
+ 7                   0.05                        1                    1 0.0832
+ 8                   0.05                        1                   10 0.0832
+ 9                   0.01                        1                    1 0.0898
+10                   0.01                        1                   10 0.0898
+11                   0.01                       10                    1 0.0900
+12                   0.01                       10                   10 0.0900
+13                   0.001                       1                    1 0.127 
+14                   0.001                       1                   10 0.127 
+15                   0.001                      10                    1 0.127 
+16                   0.001                      10                   10 0.127 
+
+>>> BEST for 지육_평균 :
+# A tibble: 1 × 4
+  changepoint_prior_scale seasonality_prior_scale holidays_prior_scale   MAPE
+                    <dbl>                   <dbl>                <dbl>  <dbl>
+1                     0.5                      10                    1 0.0743
+
+=== Tuning: 암송아지 ===
+  cps=0.001 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1092
+  cps=0.001 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1092
+  cps=0.001 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1114
+  cps=0.001 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1114
+  cps=0.010 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1101
+  cps=0.010 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1101
+  cps=0.010 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1104
+  cps=0.010 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1104
+  cps=0.050 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1057
+  cps=0.050 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1057
+  cps=0.050 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1064
+  cps=0.050 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1064
+  cps=0.500 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1185
+  cps=0.500 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1185
+  cps=0.500 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1181
+  cps=0.500 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1181
+# A tibble: 16 × 4
+   changepoint_prior_scale seasonality_prior_scale holidays_prior_scale  MAPE
+                     <dbl>                   <dbl>                <dbl> <dbl>
+ 1                   0.05                        1                    1 0.106
+ 2                   0.05                        1                   10 0.106
+ 3                   0.05                       10                    1 0.106
+ 4                   0.05                       10                   10 0.106
+ 5                   0.001                       1                    1 0.109
+ 6                   0.001                       1                   10 0.109
+ 7                   0.01                        1                    1 0.110
+ 8                   0.01                        1                   10 0.110
+ 9                   0.01                       10                    1 0.110
+10                   0.01                       10                   10 0.110
+11                   0.001                      10                    1 0.111
+12                   0.001                      10                   10 0.111
+13                   0.5                        10                    1 0.118
+14                   0.5                        10                   10 0.118
+15                   0.5                         1                    1 0.118
+16                   0.5                         1                   10 0.118
+
+>>> BEST for 암송아지 :
+# A tibble: 1 × 4
+  changepoint_prior_scale seasonality_prior_scale holidays_prior_scale  MAPE
+                    <dbl>                   <dbl>                <dbl> <dbl>
+1                    0.05                       1                    1 0.106
+
+=== Tuning: 숫송아지 ===
+  cps=0.001 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0575
+  cps=0.001 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0575
+  cps=0.001 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0574
+  cps=0.001 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0574
+  cps=0.010 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0804
+  cps=0.010 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0804
+  cps=0.010 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0796
+  cps=0.010 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0796
+  cps=0.050 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0935
+  cps=0.050 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0935
+  cps=0.050 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0926
+  cps=0.050 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.0926
+  cps=0.500 sps=1.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1048
+  cps=0.500 sps=1.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1048
+  cps=0.500 sps=10.0 hps=1.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1048
+  cps=0.500 sps=10.0 hps=10.0 ... Making 6 forecasts with cutoffs between 2023-05-01 and 2025-10-17
+MAPE=0.1048
+# A tibble: 16 × 4
+   changepoint_prior_scale seasonality_prior_scale holidays_prior_scale   MAPE
+                     <dbl>                   <dbl>                <dbl>  <dbl>
+ 1                   0.001                      10                    1 0.0574
+ 2                   0.001                      10                   10 0.0574
+ 3                   0.001                       1                    1 0.0575
+ 4                   0.001                       1                   10 0.0575
+ 5                   0.01                       10                    1 0.0796
+ 6                   0.01                       10                   10 0.0796
+ 7                   0.01                        1                    1 0.0804
+ 8                   0.01                        1                   10 0.0804
+ 9                   0.05                       10                    1 0.0926
+10                   0.05                       10                   10 0.0926
+11                   0.05                        1                    1 0.0935
+12                   0.05                        1                   10 0.0935
+13                   0.5                         1                    1 0.105 
+14                   0.5                         1                   10 0.105 
+15                   0.5                        10                    1 0.105 
+16                   0.5                        10                   10 0.105 
+
+>>> BEST for 숫송아지 :
+# A tibble: 1 × 4
+  changepoint_prior_scale seasonality_prior_scale holidays_prior_scale   MAPE
+                    <dbl>                   <dbl>                <dbl>  <dbl>
+1                   0.001                      10                    1 0.0574
+
+========================================
+최종 권장 파라미터
+========================================
+지육_평균 :# A tibble: 1 × 3
+  changepoint_prior_scale seasonality_prior_scale holidays_prior_scale
+                    <dbl>                   <dbl>                <dbl>
+1                     0.5                      10                    1
+암송아지  :# A tibble: 1 × 3
+  changepoint_prior_scale seasonality_prior_scale holidays_prior_scale
+                    <dbl>                   <dbl>                <dbl>
+1                    0.05                       1                    1
+숫송아지  :# A tibble: 1 × 3
+  changepoint_prior_scale seasonality_prior_scale holidays_prior_scale
+                    <dbl>                   <dbl>                <dbl>
+1                   0.001                      10                    1
