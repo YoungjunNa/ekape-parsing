@@ -15,6 +15,41 @@ library(patchwork)
 
 .data <- rlang::.data
 
+# =============================================================================
+# 한글 폰트 설정 (OS별 자동 선택)
+# - macOS: AppleGothic
+# - Linux(GitHub Actions): Noto Sans CJK KR (fonts-noto-cjk 패키지)
+# - Windows: 맑은 고딕
+# 시스템에 설치된 폰트 중 사용 가능한 것을 자동으로 선택한다.
+# =============================================================================
+
+resolve_korean_font <- function() {
+  sysname <- Sys.info()[["sysname"]]
+
+  candidates <- switch(
+    sysname,
+    "Darwin"  = c("AppleGothic", "Apple SD Gothic Neo", "Noto Sans CJK KR", "NanumGothic"),
+    "Linux"   = c("Noto Sans CJK KR", "NanumGothic", "NanumBarunGothic", "UnDotum"),
+    "Windows" = c("Malgun Gothic", "맑은 고딕", "NanumGothic", "Noto Sans CJK KR"),
+    c("Noto Sans CJK KR", "NanumGothic", "AppleGothic")
+  )
+
+  available <- tryCatch(
+    as.character(systemfonts::system_fonts()$family),
+    error = function(e) character(0)
+  )
+
+  if (length(available) > 0) {
+    hit <- candidates[candidates %in% available]
+    if (length(hit) > 0) return(hit[[1]])
+  }
+
+  candidates[[1]]
+}
+
+korean_font <- resolve_korean_font()
+message("Using Korean font family: ", korean_font)
+
 # 디렉토리 생성
 if (!dir.exists("assets")) {
   dir.create("assets")
@@ -221,7 +256,7 @@ create_combined_calf_plot <- function() {
       color = NULL,
       caption = "음영은 80% 신뢰구간"
     ) +
-    theme_minimal(base_family = "AppleGothic") +
+    theme_minimal(base_family = korean_font) +
     theme(
       plot.title = element_text(face = "bold", size = 14),
       plot.subtitle = element_text(color = "gray40", size = 10),
@@ -286,7 +321,7 @@ create_weekly_forecast_plot <- function(var_name, y_label, title_suffix) {
       y = y_label,
       caption = "파란 영역: 80% 신뢰구간 | 빨간 점선: 예측 시작"
     ) +
-    theme_minimal(base_family = "AppleGothic") +
+    theme_minimal(base_family = korean_font) +
     theme(
       plot.title = element_text(face = "bold", size = 14),
       plot.subtitle = element_text(color = "gray40", size = 10),
@@ -341,7 +376,7 @@ create_component_plot <- function() {
     ggplot(aes(x = .data$ds, y = .data$effect)) +
     geom_line(color = "#2c3e50", linewidth = 1) +
     labs(title = "추세(Trend)", x = NULL, y = "가격 (원/kg)") +
-    theme_minimal(base_family = "AppleGothic") +
+    theme_minimal(base_family = korean_font) +
     theme(plot.title = element_text(face = "bold", size = 12)) +
     scale_x_date(date_labels = "%m", date_breaks = "1 month") +
     scale_y_continuous(labels = scales::comma)
@@ -352,7 +387,7 @@ create_component_plot <- function() {
     geom_hline(yintercept = 0, color = "#b2bec3", linewidth = 0.6) +
     geom_line(color = "#16a085", linewidth = 1) +
     labs(title = "연간 효과", x = NULL, y = "기여도") +
-    theme_minimal(base_family = "AppleGothic") +
+    theme_minimal(base_family = korean_font) +
     theme(plot.title = element_text(face = "bold", size = 12)) +
     scale_x_date(date_labels = "%m", date_breaks = "1 month") +
     scale_y_continuous(labels = scales::comma)
@@ -372,7 +407,7 @@ create_component_plot <- function() {
     geom_point(color = "#8e44ad", size = 2) +
     geom_text(aes(label = .data$holiday), angle = 90, vjust = -0.3, hjust = 0, size = 2.7, check_overlap = TRUE) +
     labs(title = "공휴일 효과", x = NULL, y = "기여도") +
-    theme_minimal(base_family = "AppleGothic") +
+    theme_minimal(base_family = korean_font) +
     theme(plot.title = element_text(face = "bold", size = 12)) +
     scale_x_date(date_labels = "%y-%m", date_breaks = "2 months") +
     scale_y_continuous(labels = scales::comma)
@@ -382,8 +417,8 @@ create_component_plot <- function() {
       title = "지육_평균 Prophet 모델 구성요소",
       subtitle = "추세 · 연간 계절성 · 공휴일 효과 분해 (화~금 데이터만 사용 → 요일 효과 미도입)",
       theme = theme(
-        plot.title = element_text(face = "bold", size = 15, family = "AppleGothic"),
-        plot.subtitle = element_text(size = 10, color = "gray40", family = "AppleGothic")
+        plot.title = element_text(face = "bold", size = 15, family = korean_font),
+        plot.subtitle = element_text(size = 10, color = "gray40", family = korean_font)
       )
     )
 }
@@ -401,8 +436,8 @@ combined_plot <- p1 / p2 +
     title = "한우 가격 예측 (Prophet 모델) - 주차별 평균",
     subtitle = paste0("생성일: ", Sys.Date(), " | 실제 6개월 + 예측 6개월 (화~금만 사용, 월요일은 일요일 휴장으로 인한 물량 부족으로 제외)"),
     theme = theme(
-      plot.title = element_text(face = "bold", size = 16, family = "AppleGothic"),
-      plot.subtitle = element_text(color = "gray50", size = 11, family = "AppleGothic")
+      plot.title = element_text(face = "bold", size = 16, family = korean_font),
+      plot.subtitle = element_text(color = "gray50", size = 11, family = korean_font)
     )
   )
 

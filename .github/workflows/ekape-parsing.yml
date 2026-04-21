@@ -25,7 +25,8 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev fonts-noto-cjk
+          fc-cache -f
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
